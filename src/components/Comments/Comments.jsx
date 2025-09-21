@@ -6,10 +6,10 @@ export default function Comments({ comments }) {
     <div className="comments">
       <div className="top">
         <img
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+          src="https://cdn.pixabay.com/animation/2022/09/27/07/02/07-02-39-333_512.gif"
           alt="Commenter"
         />
-        <input type="text" placeholder="Write a comment" required/>
+        <input type="text" placeholder="Write a comment" required />
         <button type="submit">Send</button>
       </div>
       <div className="bottom">
@@ -17,7 +17,7 @@ export default function Comments({ comments }) {
           <div className="comment" key={comment.id}>
             <div className="left">
               <img
-                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                src="https://cdn.pixabay.com/animation/2022/09/27/07/02/07-02-39-333_512.gif"
                 alt="commenter"
               />
             </div>

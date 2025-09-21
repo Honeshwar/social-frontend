@@ -3,6 +3,18 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+// creating variables in scss
+$primary-color: purple;
+$primary-hover-color: rgb(160, 4, 160);
+$primary-border-color: rgb(190, 1, 190);
+$secondary-color: #ee0a0a;
+$secondary-hover-color: #d60000;
+$border-radius: 8px;
+$box-shadow: 0 0 5px 1px rgb(201, 201, 201);
+$box-shadow-hover: 0 0 5px 1px rgb(145, 145, 247);
+$box-shadow-dark: 0 0 5px 1px rgb(43, 42, 42);
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -113,6 +125,34 @@ code {
         .bottom .interaction-btn {
           color: whitesmoke;
         }
+      }
+    }
+  }
+
+  // for lists
+  .lists {
+    .lists-header .lists-title {
+      color: white;
+    }
+    .lists-stats {
+      color: white;
+    }
+    .no-results {
+      color: white;
+    }
+    .lists-card {
+      background-color: #2b2a2a;
+      .card-title {
+        color: white;
+      }
+      .description {
+        color: white;
+      }
+      .stat {
+        color: white;
+      }
+      .category-badge {
+        color: white;
       }
     }
   }

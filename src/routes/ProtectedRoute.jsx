@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContextValue } from "../context/authContext";
 import MainLoader from "../components/Loaders/MainLoader";
@@ -8,21 +8,24 @@ export default function ProtectedRoute({
   isProtectionRequired = true,
 }) {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuthContextValue();
-  const [loading, setLoading] = useState(true);
+  const { isAuthenticated, loading } = useAuthContextValue();
+  // 👆 assume your AuthProvider exposes a proper "loading" state while checking session
+
   useEffect(() => {
-    setLoading(true);
+    if (loading) return; // wait until auth state is resolved
+
     if (isProtectionRequired && !isAuthenticated) {
       //user access home page but use is not loginin/have no session
-      navigate("/signin");
+      navigate("/signin", { replace: true });
     } else if (!isProtectionRequired && isAuthenticated) {
       //user access login page but use is loginin already
-      navigate("/");
+      navigate("/", { replace: true });
     }
-    setLoading(false);
-    //cleanup func reaturn
-  }, [isProtectionRequired, isAuthenticated, navigate]);
+  }, [isProtectionRequired, isAuthenticated, loading, navigate]);
 
-  // loading benefit that after mouted and also after all checks i return or render children or App., see loading text not children
-  return <>{loading ? <MainLoader /> : children}</>;
+  if (loading) {
+    return <MainLoader />; // show loader until auth is checked
+  }
+
+  return children;
 }

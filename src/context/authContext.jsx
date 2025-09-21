@@ -10,7 +10,7 @@ export default function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [signIn, setSignIn] = useState(null);
   const [register, setRegister] = useState(null);
   const navigate = useNavigate();
@@ -57,6 +57,7 @@ export default function AuthProvider({ children }) {
       setUser(userInLocalStorage);
       setIsAuthenticated(true);
     }
+    setLoading(false);
   }, []);
   useEffect(() => {
     console.log("isAuthenticated", isAuthenticated);

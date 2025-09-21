@@ -1,0 +1,602 @@
+// Variables
+$primary-color: #3b82f6;
+$secondary-color: #6b7280;
+$accent-color: #10b981;
+$danger-color: #ef4444;
+$warning-color: #f59e0b;
+$background-color: #f8fafc;
+$card-background: #ffffff;
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+$border-color: #e5e7eb;
+$border-radius: 12px;
+$shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin card-base {
+  background: $card-background;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+@mixin truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Responsive breakpoints
+$breakpoints: (
+  'mobile': 480px,
+  'tablet': 768px,
+  'desktop': 1024px,
+  'large': 1200px
+);
+
+@mixin respond-to($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+// Main Dashboard Styles
+.social-dashboard {
+  min-height: 100vh;
+  background: $background-color;
+  padding: 1rem;
+  
+  @include respond-to('tablet') {
+    padding: 2rem;
+  }
+}
+
+// Dashboard Header
+.dashboard-header {
+  @include flex-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  
+  h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0;
+    
+    @include respond-to('tablet') {
+      font-size: 2.25rem;
+    }
+  }
+}
+
+.view-controls {
+  display: flex;
+  gap: 0.5rem;
+  background: $card-background;
+  padding: 0.25rem;
+  border-radius: 8px;
+  box-shadow: $shadow;
+  
+  .view-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: transparent;
+    color: $text-secondary;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    
+    &:hover {
+      background: #f3f4f6;
+    }
+    
+    &.active {
+      background: $primary-color;
+      color: white;
+    }
+  }
+}
+
+// Dashboard Tabs
+.dashboard-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  
+  @include respond-to('tablet') {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: $card-background;
+    color: $text-secondary;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    min-width: fit-content;
+    box-shadow: $shadow;
+    
+    &:hover {
+      background: #f9fafb;
+      transform: translateY(-1px);
+    }
+    
+    &.active {
+      background: $primary-color;
+      color: white;
+      box-shadow: $shadow-lg;
+    }
+    
+    .tab-icon {
+      font-size: 1.2rem;
+    }
+    
+    .tab-name {
+      font-weight: 500;
+      font-size: 0.875rem;
+      
+      @include respond-to('mobile') {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+// Dashboard Content
+.dashboard-content {
+  .cards-container {
+    display: grid;
+    gap: 1.5rem;
+    
+    // Grid view (default)
+    grid-template-columns: 1fr;
+    
+    @include respond-to('mobile') {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    
+    @include respond-to('tablet') {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+    
+    @include respond-to('desktop') {
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+  }
+  
+  // List view
+  &.list-view .cards-container {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+// Base Card Styles
+.card {
+  @include card-base;
+  
+  .card-image {
+    position: relative;
+    
+    img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+  }
+  
+  .card-content {
+    padding: 1rem;
+  }
+  
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0 0 0.75rem 0;
+    @include truncate;
+  }
+  
+  .card-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: $text-secondary;
+      font-size: 0.875rem;
+      
+      svg {
+        color: $secondary-color;
+      }
+    }
+  }
+}
+
+// Marketplace Card
+.marketplace-card {
+  .card-image {
+    height: 200px;
+    
+    .category-tag {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+  }
+  
+  .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $accent-color;
+    margin-bottom: 0.5rem;
+  }
+  
+  .seller-info,
+  .location-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $text-secondary;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    
+    svg {
+      color: $secondary-color;
+    }
+  }
+}
+
+// Watch Card
+.watch-card {
+  .card-image {
+    height: 180px;
+    
+    .play-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      @include flex-center;
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 50%;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    &:hover .play-overlay {
+      opacity: 1;
+    }
+    
+    .duration-tag {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+  }
+  
+  .creator-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $text-secondary;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    
+    svg {
+      color: $secondary-color;
+    }
+  }
+  
+  .video-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: $text-secondary;
+      font-size: 0.875rem;
+    }
+  }
+  
+  .category-badge {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+}
+
+// Memory Card
+.memory-card {
+  .card-image {
+    height: 200px;
+    
+    .media-count {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+  }
+  
+  .memory-info,
+  .location-info,
+  .participants {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $text-secondary;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    
+    svg {
+      color: $secondary-color;
+    }
+    
+    span {
+      @include truncate;
+    }
+  }
+}
+
+// Event Card
+.event-card {
+  .card-content {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .event-date {
+    @include flex-center;
+    flex-direction: column;
+    background: $primary-color;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    min-width: 80px;
+    height: fit-content;
+    
+    .date-day {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    
+    .date-month {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+  }
+  
+  .event-info {
+    flex: 1;
+    
+    .card-title {
+      margin-bottom: 1rem;
+    }
+  }
+  
+  .event-details {
+    margin-bottom: 1rem;
+    
+    .detail {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: $text-secondary;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+      
+      svg {
+        color: $secondary-color;
+      }
+    }
+  }
+  
+  .event-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    
+    .attendees {
+      color: $accent-color;
+      font-weight: 500;
+    }
+    
+    .interested {
+      color: $warning-color;
+      font-weight: 500;
+    }
+  }
+  
+  .category-badge {
+    display: inline-block;
+    background: #f3e8ff;
+    color: #7c3aed;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+}
+
+// Placeholder Card
+.placeholder-card {
+  @include flex-center;
+  min-height: 200px;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  
+  .card-content {
+    h3 {
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0;
+    }
+  }
+}
+
+// Responsive adjustments for list view
+.list-view {
+  .card {
+    .card-content {
+      @include respond-to('tablet') {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+    
+    .card-image {
+      @include respond-to('tablet') {
+        width: 200px;
+        flex-shrink: 0;
+      }
+    }
+  }
+  
+  .event-card .card-content {
+    @include respond-to('tablet') {
+      display: flex;
+    }
+  }
+}
+
+// Loading states and animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cards-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+// Scrollbar styling
+.dashboard-tabs {
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+    
+    &:hover {
+      background: #a1a1a1;
+    }
+  }
+}
+
+// Dark mode support (optional)
+@media (prefers-color-scheme: dark) {
+  .social-dashboard {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+  
+  .card {
+    background: #374151;
+    color: #f9fafb;
+  }
+  
+  .card-title {
+    color: #f9fafb;
+  }
+  
+  .dashboard-tabs .tab-btn {
+    background: #374151;
+    color: #d1d5db;
+    
+    &:hover {
+      background: #4b5563;
+    }
+  }
+  
+  .view-controls {
+    background: #374151;
+    
+    .view-btn:hover {
+      background: #4b5563;
+    }
+  }
+}

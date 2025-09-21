@@ -12,8 +12,10 @@ import { AiOutlineMail } from "react-icons/ai";
 
 import "./Profile.scss";
 import Posts from "../../components/Posts/Posts";
+import { useAuthContextValue } from "../../context/authContext";
 
 export default function Profile() {
+  const { user } = useAuthContextValue();
   return (
     <div className="profile">
       <div className="banner">
@@ -24,7 +26,10 @@ export default function Profile() {
       </div>
       <div className="details">
         <img
-          src="https://cdn.pixabay.com/photo/2020/10/06/05/31/woman-5631257_640.jpg"
+          src={
+            user?.profilePicture ||
+            "https://cdn.pixabay.com/animation/2022/09/27/07/02/07-02-39-333_512.gif"
+          }
           alt="profile"
         />
         <div className="left">

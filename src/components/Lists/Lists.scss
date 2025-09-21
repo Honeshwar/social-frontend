@@ -1,0 +1,638 @@
+// .lists {
+//   padding: 20px;
+
+//   h2 {
+//     margin-bottom: 20px;
+//     font-size: 22px;
+//   }
+
+//   .listsGrid {
+//     display: grid;
+//     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+//     gap: 15px;
+
+//     .listsCard {
+//       background: #fff;
+//       border-radius: 12px;
+//       padding: 15px;
+//       text-align: center;
+//       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+//       img {
+//         border-radius: 50%;
+//         width: 70px;
+//         height: 70px;
+//         margin-bottom: 10px;
+//       }
+
+//       p {
+//         font-size: 14px;
+//         font-weight: 500;
+//       }
+//     }
+//   }
+// }
+
+// Universal Lists Component Styles
+$primary-color: #3b82f6;
+$secondary-color: #6b7280;
+$accent-color: #10b981;
+$danger-color: #ef4444;
+$warning-color: #f59e0b;
+$success-color: #10b981;
+$background-color: #f8fafc;
+$card-background: #ffffff;
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+$border-color: #e5e7eb;
+$border-radius: 12px;
+$shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Responsive breakpoints
+$breakpoints: (
+  "mobile": 480px,
+  "tablet": 768px,
+  "desktop": 1024px,
+  "large": 1200px,
+);
+
+@mixin respond-to($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin card-base {
+  background: $card-background;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+// Main Lists Container
+.lists {
+  width: 100%;
+  padding: 1rem;
+
+  @include respond-to("tablet") {
+    padding: 1.5rem;
+  }
+
+  .lists-header {
+    @include flex-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .lists-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: $text-primary;
+      margin: 0;
+
+      @include respond-to("tablet") {
+        font-size: 2.25rem;
+      }
+    }
+
+    .lists-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+  }
+
+  .search-bar {
+    position: relative;
+    min-width: 250px;
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $text-secondary;
+      z-index: 1;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 2px solid $border-color;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      background: $card-background;
+      transition: all 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      &::placeholder {
+        color: $text-secondary;
+      }
+    }
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: 0.25rem;
+    background: $card-background;
+    padding: 0.25rem;
+    border-radius: 8px;
+    border: 2px solid $border-color;
+    display: none;
+
+    .view-btn {
+      padding: 0.5rem;
+      border: none;
+      background: transparent;
+      color: $text-secondary;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      @include flex-center;
+
+      &:hover {
+        background: #f3f4f6;
+      }
+
+      &.active {
+        background: $primary-color;
+        color: white;
+      }
+    }
+  }
+
+  .lists-stats {
+    margin-bottom: 1rem;
+    color: $text-secondary;
+    font-size: 0.875rem;
+
+    span {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// Grid Layout
+.lists-grid {
+  display: grid;
+  gap: 1.5rem;
+
+  // Default grid view
+  grid-template-columns: 1fr;
+
+  @include respond-to("mobile") {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  @include respond-to("tablet") {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+
+  @include respond-to("desktop") {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+
+  // List view
+  &.list-view {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+    margin: 0 auto;
+
+    .lists-card {
+      display: flex;
+      align-items: stretch;
+
+      .card-image {
+        width: 200px;
+        flex-shrink: 0;
+
+        img {
+          height: 120px;
+
+          @include respond-to("tablet") {
+            height: 150px;
+          }
+        }
+      }
+
+      .card-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      // Event card specific list adjustments
+      &.event-card .card-content {
+        flex-direction: row;
+
+        .event-date {
+          margin-right: 1rem;
+        }
+      }
+    }
+  }
+}
+
+// Base Card Styles
+.lists-card {
+  @include card-base;
+
+  .card-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  .card-content {
+    padding: 1.25rem;
+
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: $text-primary;
+      margin: 0 0 0.75rem 0;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: $text-secondary;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+
+      svg {
+        color: $secondary-color;
+        flex-shrink: 0;
+      }
+
+      .label {
+        font-weight: 500;
+        color: $text-primary;
+      }
+    }
+
+    .card-stats {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+
+      .stat {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: $text-secondary;
+        font-size: 0.875rem;
+
+        svg {
+          color: $secondary-color;
+        }
+      }
+    }
+
+    .description {
+      color: $text-secondary;
+      font-size: 0.875rem;
+      line-height: 1.4;
+      margin: 0.75rem 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+}
+
+// Marketplace Card Specific Styles
+.marketplace-card {
+  .card-image {
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      @include flex-center;
+
+      .like-btn {
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        @include flex-center;
+        color: $danger-color;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover,
+        &.liked {
+          background: white;
+          transform: scale(1.1);
+        }
+
+        &.liked {
+          color: $danger-color;
+        }
+      }
+    }
+
+    &:hover .card-overlay {
+      opacity: 1;
+    }
+
+    .category-tag,
+    .condition-tag {
+      position: absolute;
+      top: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: white;
+    }
+
+    .category-tag {
+      right: 0.75rem;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .condition-tag {
+      left: 0.75rem;
+      background: $success-color;
+    }
+  }
+
+  .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $accent-color;
+    margin-bottom: 1rem;
+  }
+}
+
+// Watch Card Specific Styles
+.watch-card {
+  .card-image {
+    height: 180px;
+
+    .play-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      @include flex-center;
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 50%;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover .play-overlay {
+      opacity: 1;
+    }
+
+    .duration-tag {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .trending-tag {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      background: $warning-color;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .featured-tag {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: $primary-color;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+  }
+
+  .category-badge {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 0.75rem;
+  }
+}
+
+// Memory Card Specific Styles
+.memory-card {
+  .card-image {
+    .media-count {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// Event Card Specific Styles
+.event-card {
+  .card-content {
+    display: flex;
+    gap: 1rem;
+
+    .event-date {
+      @include flex-center;
+      flex-direction: column;
+      background: $primary-color;
+      color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      min-width: 80px;
+      height: fit-content;
+      flex-shrink: 0;
+
+      .date-day {
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .date-month {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        margin-top: 0.25rem;
+      }
+    }
+
+    .event-info {
+      flex: 1;
+
+      .card-title {
+        margin-bottom: 1rem;
+      }
+
+      .event-details {
+        margin-bottom: 1rem;
+      }
+
+      .event-stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.875rem;
+
+        .attendees {
+          color: $accent-color;
+          font-weight: 500;
+        }
+
+        .interested {
+          color: $warning-color;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .category-badge {
+    display: inline-block;
+    background: #f3e8ff;
+    color: #7c3aed;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+}
+
+// Gaming Card Specific Styles
+.gaming-card {
+  .card-image {
+    .price-tag {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: $accent-color;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+  }
+
+  .genre-badge {
+    display: inline-block;
+    background: #e0f7fa;
+    color: #006064;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 0.75rem;
+  }
+} // Empty State Styles
+.lists-empty {
+  @include flex-center;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem 0;
+
+  .empty-icon {
+    font-size: 4rem;
+    color: $secondary-color;
+  }
+
+  .empty-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  .empty-subtitle {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    margin: 0;
+  }
+}
