@@ -1,4 +1,4 @@
-@import "../../index.scss"; //to import static scss rules/styles
+@use "../../index.scss" as *; //to import static scss rules/styles
 
 .leftBar {
   flex: 2;
