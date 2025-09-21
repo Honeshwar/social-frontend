@@ -1,7 +1,6 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import request_API from "../api/customFetchAPI";
-// import { useUserContextValue } from "./userContext";
 
 //create context
 const context = createContext();
@@ -11,6 +10,7 @@ export default function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [signIn, setSignIn] = useState(null);
   const [register, setRegister] = useState(null);
   const navigate = useNavigate();
@@ -19,9 +19,11 @@ export default function AuthProvider({ children }) {
     if (register) {
       console.log(register);
       const registerUser = async () => {
+        setLoading(true);
         const Data = await request_API.auth.register(register);
         console.log("new user created", Data);
         setRegister(null);
+        setLoading(false);
         if (Data.success) return navigate("/signin");
         setError(Data.error);
       };
@@ -31,6 +33,7 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     if (signIn) {
       const findUser = async () => {
+        setLoading(true);
         const data = await request_API.auth.signin(signIn);
         console.log("signin data: ", data);
         setSignIn(null);
@@ -40,6 +43,7 @@ export default function AuthProvider({ children }) {
         }
         setUser(data?.data);
         setIsAuthenticated(true);
+        setLoading(false);
         setTimeout(() => {
           navigate("/");
         }, 2000);
@@ -71,9 +75,24 @@ export default function AuthProvider({ children }) {
   const handleSignin = ({ email, password }) => {
     setSignIn({ email, password });
   };
+
+  const handleLogout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem("user");
+    navigate("/signin");
+  };
   return (
     <context.Provider
-      value={{ isAuthenticated, user, error, handleRegister, handleSignin }}
+      value={{
+        isAuthenticated,
+        user,
+        error,
+        loading,
+        handleRegister,
+        handleSignin,
+        handleLogout,
+      }}
     >
       {children}
     </context.Provider>

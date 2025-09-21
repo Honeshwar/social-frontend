@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { DarkModeContextProvider } from "./context/darkModeContext";
 import Layout from "./Layout";
 

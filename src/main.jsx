@@ -1,70 +1,20 @@
-import React from "react";
+import { Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import {
-  createBrowserRouter,
-  Navigate,
-  Outlet,
-  RouterProvider,
-  // useNavigate,
-} from "react-router-dom";
-// import { LeftBar, Navbar, RightBar } from "./components";
-import AuthProvider from "./context/authContext";
-// import {
-//   DarkModeContextProvider,
-//   useDarkModeContextValue,
-// } from "./context/darkModeContext";
-import { Home, Profile, SignIn, SignUp } from "./pages";
-import ProtectedRoute from "./ProtectedRoute";
-// import UserContextProvider from "./context/userContext";
-import "./index.scss";
+import { RouterProvider } from "react-router-dom";
+import { Bounce, ToastContainer } from "react-toastify";
+import { router } from "./routes/routes";
+import "react-toastify/dist/ReactToastify.css";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-
-// router code
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <AuthProvider>
-        <ProtectedRoute isProtectionRequired={true}>
-          {/* // protect app */}
-          <App />
-        </ProtectedRoute>
-      </AuthProvider>
-    ),
-    children: [
-      { path: "/", element: <Home /> },
-      { path: "/profile/:id", element: <Profile /> },
-    ],
-  },
-
-  {
-    path: "/signin",
-    element: (
-      <AuthProvider>
-        <ProtectedRoute isProtectionRequired={false}>
-          <SignIn />
-        </ProtectedRoute>
-      </AuthProvider>
-    ),
-  },
-  {
-    path: "/signup",
-    element: (
-      <AuthProvider>
-        <ProtectedRoute isProtectionRequired={false}>
-          <SignUp />
-        </ProtectedRoute>
-      </AuthProvider>
-    ),
-  },
-]);
-
-root.render(
-  <React.StrictMode>
-    <RouterProvider router={router}></RouterProvider>
-  </React.StrictMode>
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Suspense fallback={<div>Loading...</div>}>
+    <RouterProvider router={router} />
+    <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      theme="light"
+      transition={Bounce}
+    />
+  </Suspense>
 );
 
 //test karanga

@@ -9,7 +9,7 @@ import { useAuthContextValue } from "../../context/authContext";
 
 export default function Navbar() {
   const { isDarkMode, toogleIsDarkMode } = useDarkModeContextValue(); //contextValue
-  const { user } = useAuthContextValue();
+  const { user, handleLogout } = useAuthContextValue();
 
   return (
     <div className="navbar">
@@ -44,6 +44,7 @@ export default function Navbar() {
           <span>{user?.username}</span>
         </Link>
       </div>
+      <p onClick={handleLogout}>Logout</p>
     </div>
   );
 }

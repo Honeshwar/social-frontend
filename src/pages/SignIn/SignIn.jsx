@@ -2,17 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./SignIn.scss";
 import { useAuthContextValue } from "../../context/authContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { error, handleSignin } = useAuthContextValue();
-  console.log("error signin", error);
+  const [showPassword, setShowPassword] = useState(false);
+  const { error, loading, handleSignin } = useAuthContextValue();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(email, password);
     handleSignin({ email, password });
+    toast.success("Signin successfully");
   };
   return (
     <div className="signIn">
@@ -24,8 +25,12 @@ export default function SignIn() {
             ipsam sed debitis excepturi iste. voluptatibus porro! Libero, ut
             earum. Illo, quos ut.
           </p>
-          <p>Do you have an account ?</p>
-          <Link to="/signup">Register</Link>
+          <div className="button-container">
+            <p>Do you have an account ?</p>
+            <Link to="/signup" className={loading ? "disabled" : ""}>
+              Register
+            </Link>
+          </div>
         </div>
         <div className="right">
           {error && <p className="error">{error}</p>}
@@ -46,14 +51,28 @@ export default function SignIn() {
             </div>
             <div className="inputItems">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="password"
+                placeholder="Password"
                 required
+                value={password}
               />
+              <span
+                className="toggleIcon"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
             </div>
             <div className="btn">
-              <button type="submit">SignIn</button>
+              {loading ? (
+                <button type="button" className="loading" disabled>
+                  <span className="spinner"></span>
+                  Signing In...
+                </button>
+              ) : (
+                <button type="submit">Sign In</button>
+              )}
             </div>
           </form>
         </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthContextValue } from "./context/authContext";
+import { useAuthContextValue } from "../context/authContext";
+import MainLoader from "../components/Loaders/MainLoader";
 
 export default function ProtectedRoute({
   children,
@@ -23,5 +24,5 @@ export default function ProtectedRoute({
   }, [isProtectionRequired, isAuthenticated, navigate]);
 
   // loading benefit that after mouted and also after all checks i return or render children or App., see loading text not children
-  return <>{loading ? "Loading..." : children}</>;
+  return <>{loading ? <MainLoader /> : children}</>;
 }
